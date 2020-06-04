@@ -7,7 +7,7 @@ const SavedList = props => {
   <div className="saved-list">
     <h3>Saved Movies:</h3>
     {props.list.map(movie => (
-      <NavLink exact to={`/movies/${movie.id}`}>{movie.title}</NavLink>
+      <NavLink className="saved-movie" exact to={`/movies/${movie.id}`} activeClassName="saved-active">{movie.title}</NavLink>
     ))}
     <div className="home-button" onClick={()=> history.push('/')}>Home</div>
   </div>
