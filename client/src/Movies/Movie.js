@@ -11,6 +11,7 @@ const Movie = (props) => {
     // change ^^^ that line and grab the id from the URL
     // You will NEED to add a dependency array to this effect hook
       setMovie(null)
+      setTimeout(()=>{
        axios
         .get(`http://localhost:5000/api/movies/${params.movieid}`)
         .then(response => {
@@ -19,6 +20,7 @@ const Movie = (props) => {
         .catch(error => {
           console.error(error);
         });
+      }, 1000)
         
 
   },[params.movieid]);
@@ -29,13 +31,22 @@ const Movie = (props) => {
    }
 
   if (!movie) {
-    return <div>Loading movie information...</div>;
+    return <div className="save-wrapper movie-card">Loading movie information...</div>;
+  }
+  function movieInSaved(){
+    let found = false
+    props.saved.forEach(element => {
+      if(element.id === movie.id){
+        found = true;
+      }
+    })
+    return found ? "Remove" : "Save"
   }
 
   return (
     <div className="save-wrapper">
       <MovieCard movie={movie} />
-      <div className="save-button" onClick={saveMovie}>Save</div>
+      <div className="save-button" onClick={saveMovie}>{movieInSaved()}</div>
     </div>
   );
 }

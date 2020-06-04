@@ -9,6 +9,7 @@ import Movie from './Movies/Movie';
 const App = () => {
   const [savedList, setSavedList] = useState([]);
   const [movieList, setMovieList] = useState([]);
+  
 
   useEffect(() => {
     const getMovies = () => {
@@ -25,7 +26,24 @@ const App = () => {
   }, []);
 
   const addToSavedList = movie => {
-    setSavedList([...savedList, movie]);
+    let index = -1;
+    savedList.forEach((element, pos) =>{
+      if(element.id === movie.id){
+        index = pos
+      }
+    })
+    if(index === -1){
+      setSavedList([...savedList, movie]);
+    }
+    else{
+      if(savedList.length === 1){
+        setSavedList([])
+      }
+      let start = savedList.slice(0, index);
+      let end = savedList.slice(index+1, savedList.length)
+      setSavedList([...start, ...end])
+    }
+    
   };
 
   return (
@@ -36,7 +54,7 @@ const App = () => {
           <MovieList movies={movieList}></MovieList>
         </Route>
         <Route path='/movies/:movieid'>
-          <Movie location={document.location.href} movies={movieList} addToSavedList={addToSavedList} />
+          <Movie movies={movieList} addToSavedList={addToSavedList} saved={savedList}/>
         </Route>
       </Switch>
     </div>
